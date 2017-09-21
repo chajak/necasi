@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+}
+
+main {
+    height: 100vh;
+}
+
+#mainSearch {
+    width: 100%;
+    border-radius: 10px;
+    min-height: 150px;
+    padding: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+    text-align: center;
+}
+
+#mainSearch > span {
+    display: inline-block;
+}

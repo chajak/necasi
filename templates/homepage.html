@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Necasi.cz</title>
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ga}}"></script>
+        <script src="{{resourcesUrl}}/js/script.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+        <link href="{{resourcesUrl}}/css/style.css" rel="stylesheet"/>
+        <link href="{{themeUrl}}/css/style.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <header></header>
+        <main class="d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="hidden-xs col-md-2 col-lg-3"></div>
+                    <div class="col-xs-12 col-md-8 col-lg-6">
+                        <div id="mainSearch">
+                            <span>Jak bude?</span>
+                        </div>
+                    </div>
+                    <div class="hidden-xs col-md-2 col-lg-3"></div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments)};
+                gtag('js', new Date());
+                gtag('config', '{{ga}}');
+            </script>
+        </footer>
+    </body>
+</html>
