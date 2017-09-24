@@ -16,9 +16,12 @@ main {
     display: inline-block;
     vertical-align: middle;
     float: none;
-    text-align: center;
 }
 
 #mainSearch > span {
     display: inline-block;
+}
+
+.btn:hover {
+    cursor: pointer;
 }

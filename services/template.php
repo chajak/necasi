@@ -5,6 +5,7 @@
         protected $values = array();
     
         public function __construct($file) {
+            parent::__construct();
             $this->file = $file;
             $this->filePath = self::$config["templatesDir"].$this->file;
 

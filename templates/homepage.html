@@ -1,37 +1,93 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Necasi.cz</title>
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{ga}}"></script>
-        <script src="{{resourcesUrl}}/js/script.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-        <link href="{{resourcesUrl}}/css/style.css" rel="stylesheet"/>
-        <link href="{{themeUrl}}/css/style.css" rel="stylesheet"/>
-    </head>
-    <body>
-        <header></header>
-        <main class="d-flex align-items-center">
-            <div class="container">
-                <div class="row">
-                    <div class="hidden-xs col-md-2 col-lg-3"></div>
-                    <div class="col-xs-12 col-md-8 col-lg-6">
-                        <div id="mainSearch">
-                            <span>Jak bude?</span>
-                        </div>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="G_S_bbRbbd_vdqo2EL5dKlJ6s-WYmqBiDJjtsE7ynG8">
+    <title>Necasi.cz</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ga}}"></script>
+    <script src="{{resourcesUrl}}/js/script.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="{{resourcesUrl}}/css/style.css" rel="stylesheet" />
+    <link href="{{themeUrl}}/css/style.css" rel="stylesheet" />
+
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="{{resourcesUrl}}/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{resourcesUrl}}/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{resourcesUrl}}/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{resourcesUrl}}/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{resourcesUrl}}/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{resourcesUrl}}/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{resourcesUrl}}/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{resourcesUrl}}/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{resourcesUrl}}/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{resourcesUrl}}/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{resourcesUrl}}/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{resourcesUrl}}/favicon/favicon-16x16.png">
+    <link rel="manifest" href="{{resourcesUrl}}/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{resourcesUrl}}/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+    <header></header>
+    <main class="d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-1 col-md-2"></div>
+                <div class="col-sm-10 col-md-8">
+                    <div class="row" id="mainSearch">
+                        <form method="POST" class="container" id="searchForm">
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-2 col-md-1" for="search">Kde:</label>
+                                <div class="col-sm-10 col-md-11">
+                                    <input type="text" id="search" class="form-control" name="search" placeholder="Město nebo místo ..." />
+                                    <input type="hidden" name="lat" id="lat" />
+                                    <input type="hidden" name="lng" id="lng" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-2 col-md-1">Kdy:</label>
+                                <div class="col-sm-10 col-md-11">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-success active">
+                                            <input type="radio" name="day" id="day1" value="{{today}}" checked> Dnes
+                                        </label>
+                                        <label class="btn btn-success">
+                                            <input type="radio" name="day" id="day2" value="{{tomorrow}}"> Zítra
+                                        </label>
+                                        <label class="btn btn-success">
+                                            <input type="radio" name="day" id="day3"> Jiné datum
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2 col-md-1">
+                                    &nbsp;
+                                </div>
+                                <div class="col-sm-10 col-md-11">
+                                    <button type="submit" class="btn btn-primary">Jak bude?</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="hidden-xs col-md-2 col-lg-3"></div>
                 </div>
+                <div class="col-sm-1 col-md-2"></div>
             </div>
-        </main>
-        <footer>
-            <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments)};
-                gtag('js', new Date());
-                gtag('config', '{{ga}}');
-            </script>
-        </footer>
-    </body>
+        </div>
+    </main>
+    <footer>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments) };
+            gtag('js', new Date());
+            gtag('config', '{{ga}}');
+        </script>
+    </footer>
+</body>
+
 </html>
