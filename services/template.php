@@ -1,5 +1,7 @@
 <?php
-    class Template extends BaseClass {
+    namespace services;
+
+    class Template extends \BaseClass {
         protected $file;
         protected $filePath;
         protected $values = array();
