@@ -2,8 +2,18 @@
     namespace services\connectors;
 
     class BaseConnector extends \BaseClass {
-        private $location = array();
-        private $dateTime;
+        protected $url;
+        protected $urlExample;
+        protected $usingLocation = array("lat", "lng", "address");
+        protected $location = array(
+            "lat" => "",
+            "lng" => "",
+            "address" => ""
+        );
+
+        protected $dateTime;
+        protected $rawOutput;
+        protected $parser;
 
         public function __construct() {
             parent::__construct();
@@ -28,12 +38,31 @@
             $this->datetime = $datetime;
         }
 
-        private function formatDateTime() {
-            return "Override Me!";
-        }
-
         public function whoAmI() {
             echo get_called_class();
+        }
+
+        public function getForecast() {
+            die("Override Me!");
+        }
+
+        protected function reduceLocation() {
+            $reducedLocation = array();
+            foreach($this->usingLocation as $key => $val) {
+                if(isset($this->location[$val])) {
+                    $reducedLocation[$val] = $this->location[$val];
+                }
+            }
+
+            $this->location = $reducedLocation;
+        }
+
+        protected function formatDateTime() {
+            die("Override Me!");
+        }
+
+        protected function isValid() {
+            die("Override Me!");
         }
     }
 ?>

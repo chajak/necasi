@@ -10,5 +10,7 @@
     $dateTime = $_GET['datetime'] ?? '';
 
     $yrNo = new SpecificConnectors\YrNoConnector;
-    $yrNo->whoAmI();
+    $yrNo->setGps($lat, $lng);
+    $weather = $yrNo->getWeather();
+    echo '<textarea>'.$weather.'</textarea>';
 ?>
