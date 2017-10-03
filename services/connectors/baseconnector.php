@@ -39,7 +39,11 @@
         }
 
         public function whoAmI() {
-            echo get_called_class();
+            return get_called_class();
+        }
+
+        public function setParser($parser) {
+            $this->parser = $parser;
         }
 
         public function getForecast() {

@@ -13,15 +13,23 @@
         }
 
         public function getWeather() {
-            if($this->isValid()) {
-                $this->rawOutput = file_get_contents($this->url);
+            if(!$this->isValid()) {
+                return false;
             }
 
-            //use parser, this for test only
-            return $this->rawOutput;
+            $this->rawOutput = file_get_contents($this->url);
+
+            //return object, this for test only
+            $tempXml = $this->parser->parse($this->rawOutput);
+            
+            return $tempXml;
         }
 
         protected function isValid() {
+            if(!isset($this->parser) || empty($this->parser->parserVersion)) {
+                return false;
+            }
+
             $this->url = $this->urlExample;
 
             foreach($this->usingLocation as $key => $val) {
