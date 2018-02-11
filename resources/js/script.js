@@ -210,12 +210,40 @@ function processForm(e) {
         console.log("Address: " + searchedAddress + " NOT SAME - RECALCULATING");
         locator.getGpsFromAddress(searchedAddress, true);
     }
+
+    alert("/services/rest/weather.php?lat=" + locator.lat + "&lng=" + locator.lng);
+
     e.preventDefault();
     return false;
 }
 
+function btnClick(e) {
+    var clickedBtn = this;
+    for(var i = 0; i < btns.length; i++) {
+        var btn = btns[i];
+
+        if(btn === clickedBtn) {
+            btn.classList.add("active");
+            btn.getElementsByTagName("input")[0].checked = true;
+        }
+        else {
+            btn.classList.remove("active");
+            btn.getElementsByTagName("input")[0].checked = false;
+        }
+    }
+}
+
+//global now ...
+var btns = null
+
 window.onload = function () {
     locator.init();
-    var form = document.getElementById('searchForm');
+    var form = document.getElementById("searchForm");
     form.addEventListener("submit", processForm);
+
+    btns = document.querySelectorAll(".days > .btn");
+    for(var i = 0; i < btns.length; i++) {
+        var btn = btns[i];
+        btn.addEventListener("click", btnClick);
+    }
 };

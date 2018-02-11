@@ -18,18 +18,16 @@
             }
 
             $this->rawOutput = file_get_contents($this->url);
-
-            //return object, this for test only
-            $tempXml = $this->parser->parse($this->rawOutput);
+            $this->model = $this->parser->parse($this->rawOutput);
             
-            return $tempXml;
+            return $this->model;
         }
 
         protected function isValid() {
             if(!isset($this->parser) || empty($this->parser->parserVersion)) {
                 return false;
             }
-
+            
             $this->url = $this->urlExample;
 
             foreach($this->usingLocation as $key => $val) {

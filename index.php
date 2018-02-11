@@ -7,6 +7,7 @@
     $tomorrow = date("Ymd", strtotime("tomorrow"));
 
     $homepage = new services\Template("homepage.html");
+    $homepage->set("jsTimestamp", filemtime($config["rootDir"].$config["resourcesUrl"]."/js/script.js"));
     $homepage->set("ga", $config["ga"]);
     $homepage->set("today", $today);
     $homepage->set("tomorrow", $tomorrow);

@@ -14,6 +14,7 @@
         protected $dateTime;
         protected $rawOutput;
         protected $parser;
+        protected $model;
 
         public function __construct() {
             parent::__construct();
