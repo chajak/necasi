@@ -7,7 +7,7 @@
         public function __construct() {
             parent::__construct();
 
-            //$this->parserVersion = "1.0";
+            $this->parserVersion = "1.0";
         }
 
         public function parse($rawXml) {

@@ -7,19 +7,17 @@
         protected $rawXml;
         protected $xml;
         protected $parserClass;
-        protected $parserName;
         public $parserVersion;
         protected $model;
 
         public function __construct() {
             $this->model = new Models\DataModel;
             $this->parserClass = "SimpleXMLElement";
-            $this->parserName = $this->whoAmI();
-            $this->parserVersion = "1.0";
+            $this->parserVersion = "0.0";
         }
 
         public function whoAmI() {
-            return get_called_class();
+            return get_called_class()."_".$this->parserVersion;
         }
 
         public function parse($rawXml) {

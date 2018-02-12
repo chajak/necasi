@@ -1,6 +1,8 @@
 <?php
     namespace services\connectors;
 
+    use services\caches as Caches;
+
     class BaseConnector extends \BaseClass {
         protected $url;
         protected $urlExample;
@@ -15,11 +17,21 @@
         protected $rawOutput;
         protected $parser;
         protected $model;
+        protected $cache;
+
+        public $connectorVersion;
 
         public function __construct() {
             parent::__construct();
 
+            $this->connectorVersion = "0.0";
+
             $this->dateTime = new \DateTime();
+            $this->cache = new Caches\DbCache($this->db, $this::$config);
+        }
+
+        public function whoAmI() {
+            return get_called_class()."_".$this->connectorVersion;
         }
 
         public function setLocation($location) {
@@ -37,10 +49,6 @@
 
         public function setDateTime($datetime) {
             $this->datetime = $datetime;
-        }
-
-        public function whoAmI() {
-            return get_called_class();
         }
 
         public function setParser($parser) {

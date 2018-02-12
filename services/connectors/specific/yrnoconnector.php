@@ -7,6 +7,8 @@
         public function __construct() {
             parent::__construct();
 
+            $this->connectorVersion = "1.0";
+
             $this->usingLocation = array("lat", "lng");
             $this->urlExample = "https://api.met.no/weatherapi/locationforecast/1.9/?lat=:lat;lon=:lng";
             $this->reduceLocation();
@@ -17,8 +19,15 @@
                 return false;
             }
 
+            $cache = $this->cache->searchInCache($this->location, $this->whoAmI());
+
+            //cache?
+            //print_r($this->db);
+
             $this->rawOutput = file_get_contents($this->url);
             $this->model = $this->parser->parse($this->rawOutput);
+
+            //save cache?
             
             return $this->model;
         }
