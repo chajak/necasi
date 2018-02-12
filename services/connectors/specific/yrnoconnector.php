@@ -20,14 +20,16 @@
             }
 
             $cache = $this->cache->searchInCache($this->location, $this->whoAmI());
+            if(empty($cache)) {
+                $this->rawOutput = file_get_contents($this->url);
+                $this->model = $this->parser->parse($this->rawOutput);
 
-            //cache?
-            //print_r($this->db);
-
-            $this->rawOutput = file_get_contents($this->url);
-            $this->model = $this->parser->parse($this->rawOutput);
-
-            //save cache?
+                //all other is saved in cache from previous request
+                $this->cache->saveIntoCache($this->model);
+            }
+            else {
+                $this->model = $cache[0];
+            }
             
             return $this->model;
         }

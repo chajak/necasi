@@ -31,7 +31,7 @@
         }
 
         public function whoAmI() {
-            return get_called_class()."_".$this->connectorVersion;
+            return (new \ReflectionClass($this))->getShortName()."_".$this->connectorVersion;
         }
 
         public function setLocation($location) {

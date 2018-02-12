@@ -17,7 +17,7 @@
         }
 
         public function whoAmI() {
-            return get_called_class()."_".$this->parserVersion;
+            return (new \ReflectionClass($this))->getShortName()."_".$this->parserVersion;
         }
 
         public function parse($rawXml) {
