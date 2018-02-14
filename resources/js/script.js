@@ -201,6 +201,7 @@ var cook = new function() {
 }
 
 function processForm(e) {
+    var datetime = document.querySelector('input[name="day"]:checked').value;
     var searchedAddress = document.getElementById("search").value;
     if (searchedAddress == locator.search) {
         //not changed address
@@ -211,7 +212,7 @@ function processForm(e) {
         locator.getGpsFromAddress(searchedAddress, true);
     }
 
-    alert("/services/rest/weather.php?lat=" + locator.lat + "&lng=" + locator.lng);
+    alert("/services/rest/weather.php?lat=" + locator.lat + "&lng=" + locator.lng + "&datetime=" + datetime);
 
     e.preventDefault();
     return false;

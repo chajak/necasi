@@ -5,35 +5,17 @@
 
     class YrNoConnector extends Connectors\BaseConnector {
         public function __construct() {
-            parent::__construct();
-
-            $this->connectorVersion = "1.0";
-
+            //call this first
             $this->usingLocation = array("lat", "lng");
             $this->urlExample = "https://api.met.no/weatherapi/locationforecast/1.9/?lat=:lat;lon=:lng";
-            $this->reduceLocation();
+
+            parent::__construct();
+
+            //call this after
+            $this->connectorVersion = "1.0";
         }
 
-        public function getWeather() {
-            if(!$this->isValid()) {
-                return false;
-            }
-
-            $cache = $this->cache->searchInCache($this->location, $this->whoAmI());
-            if(empty($cache)) {
-                $this->rawOutput = file_get_contents($this->url);
-                $this->model = $this->parser->parse($this->rawOutput);
-
-                //all other is saved in cache from previous request
-                $this->cache->saveIntoCache($this->model);
-            }
-            else {
-                $this->model = $cache[0];
-            }
-            
-            return $this->model;
-        }
-
+        //custom is valid
         protected function isValid() {
             if(!isset($this->parser) || empty($this->parser->parserVersion)) {
                 return false;

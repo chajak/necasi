@@ -28,6 +28,8 @@
 
             $this->dateTime = new \DateTime();
             $this->cache = new Caches\DbCache($this->db, $this::$config);
+
+            $this->reduceLocation();
         }
 
         public function whoAmI() {
@@ -47,16 +49,39 @@
             $this->location["address"] = $address;
         }
 
-        public function setDateTime($datetime) {
-            $this->datetime = $datetime;
+        public function setDateTime($dateTimeString) {
+            $timestamp = strtotime($dateTimeString);
+            $this->dateTime->setTimestamp($timestamp);
         }
 
         public function setParser($parser) {
             $this->parser = $parser;
         }
 
-        public function getForecast() {
-            die("Override Me!");
+        public function getWeather() {
+            if(!$this->isValid()) {
+                return false;
+            }
+
+            if($this::$config["cacheEnabled"] == true) {
+                $cache = $this->cache->searchInCache($this->location, $this->whoAmI());
+                if(empty($cache)) {
+                    $this->rawOutput = file_get_contents($this->url);
+                    $this->model = $this->parser->parse($this->rawOutput);
+
+                    //all other is saved in cache from previous request
+                    $this->cache->saveIntoCache($this->model);
+                }
+                else {
+                    $this->model = $cache[0];
+                }
+            }
+            else {
+                $this->rawOutput = file_get_contents($this->url);
+                $this->model = $this->parser->parse($this->rawOutput);
+            }
+
+            return $this->model;
         }
 
         protected function reduceLocation() {
@@ -68,10 +93,6 @@
             }
 
             $this->location = $reducedLocation;
-        }
-
-        protected function formatDateTime() {
-            die("Override Me!");
         }
 
         protected function isValid() {

@@ -7,6 +7,7 @@
         public function __construct() {
             parent::__construct();
 
+            //call this after
             $this->parserVersion = "1.0";
         }
 
@@ -29,15 +30,15 @@
         private function processAttributes() {
             $attributes = $this->xml->attributes();
 
-            $this->model->created = (string)($attributes["created"]);
+            $this->model->created = $this->getFormatedDateTimeString($attributes["created"]);
         }
 
         private function processMetaAttributes() {
             $metaAttributes = $this->xml->meta[0]->model[0]->attributes();
 
-            $this->model->validTo = (string)($metaAttributes["nextrun"]);
-            $this->model->from = (string)($metaAttributes["from"]);
-            $this->model->to = (string)($metaAttributes["to"]);
+            $this->model->validTo = $this->getFormatedDateTimeString($metaAttributes["nextrun"]);
+            $this->model->from = $this->getFormatedDateTimeString($metaAttributes["from"]);
+            $this->model->to = $this->getFormatedDateTimeString($metaAttributes["to"]);
         }
 
         private function processHours() {
@@ -55,7 +56,8 @@
                     $fogObject = $location->fog[0]->attributes();
 
                     $foundHour = array();
-                    $foundHour["datetime"] = $hourTimestamp;
+                    $foundHour["datetime"] = $this->getFormatedDateTimeString($hourTimestamp);
+
                     $foundHour["temperature"] = (string)$temperatureObject->value;
                     $foundHour["unit"] = (string)$temperatureObject->unit;
 

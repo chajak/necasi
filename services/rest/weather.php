@@ -16,6 +16,7 @@
     
     $yrNo->setParser($yrNoParser);
     $yrNo->setGps($lat, $lng);
+    $yrNo->setDateTime($dateTime);
     $weather = $yrNo->getWeather();
 
     echo "<pre>".print_r($weather, true)."</pre>";
