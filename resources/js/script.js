@@ -245,13 +245,25 @@ function callGet(url) {
     xhr.onload = function() {
         if (xhr.status === 200) {
             //handle response here
-            console.log(xhr.responseText);
+            var model = JSON.parse(xhr.responseText);
+            displayResults(model);
         }
         else {
             console.log("ERROR");
         }
     };
     xhr.send();
+}
+
+const hourTemplate = function(hour) {
+    return "<div>" + hour.formattedTime + "</div>";
+}
+
+function displayResults(model) {
+    var resultsDiv = document.getElementById("results");
+    var hoursArray = Object.values(model.hours);
+    var formattedResult = hoursArray.map(hourTemplate).join('');
+    resultsDiv.innerHTML = formattedResult;
 }
 
 //global now ...

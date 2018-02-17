@@ -57,6 +57,9 @@
 
                     $foundHour = array();
                     $foundHour["datetime"] = $this->getFormatedDateTimeString($hourTimestamp);
+                    $foundHour["formattedDate"] = $this->getFormatedDateTimeString($hourTimestamp, "d.m.Y");
+                    $foundHour["formattedShortDate"] = $this->getFormatedDateTimeString($hourTimestamp, "d.m.");
+                    $foundHour["formattedTime"] = $this->getFormatedDateTimeString($hourTimestamp, "H:i");
 
                     $foundHour["temperature"] = (string)$temperatureObject->value;
                     $foundHour["unit"] = (string)$temperatureObject->unit;

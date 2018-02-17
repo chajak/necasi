@@ -81,22 +81,6 @@
                 $this->model = $this->parser->parse($this->rawOutput);
             }
 
-            //filter out by DATETIME
-            $currentDateTime = $this->dateTime->format(\DateTime::ATOM);
-            $canAdd = false;
-            $filteredHours = array();
-            foreach($this->model->hours as $datetime => $value) {
-                if($datetime == $currentDateTime) {
-                    $canAdd = true;
-                }
-
-                if($canAdd == true) {
-                    $filteredHours[$datetime] = $value;
-                }
-            }
-
-            $this->model->hours = $filteredHours;
-
             return $this->model;
         }
 
