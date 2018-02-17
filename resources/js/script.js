@@ -212,7 +212,7 @@ function processForm(e) {
         locator.getGpsFromAddress(searchedAddress, true);
     }
 
-    alert("/services/rest/weather.php?lat=" + locator.lat + "&lng=" + locator.lng + "&datetime=" + datetime);
+    getWeather(locator, datetime);
 
     e.preventDefault();
     return false;
@@ -232,6 +232,26 @@ function btnClick(e) {
             btn.getElementsByTagName("input")[0].checked = false;
         }
     }
+}
+
+function getWeather(locator, datetime) {
+    var url = "/services/rest/weather.php?lat=" + locator.lat + "&lng=" + locator.lng + "&datetime=" + datetime;
+    callGet(url);
+}
+
+function callGet(url) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            //handle response here
+            console.log(xhr.responseText);
+        }
+        else {
+            console.log("ERROR");
+        }
+    };
+    xhr.send();
 }
 
 //global now ...

@@ -19,7 +19,11 @@
     $yrNo->setDateTime($dateTime);
     $weather = $yrNo->getWeather();
 
-    echo "<pre>".print_r($weather, true)."</pre>";
-
-    //echo "<textarea>".$weather."</textarea>";
+    if(\BaseClass::$config["debug"] == true) {
+        echo "<pre>".print_r($weather, true)."</pre>";
+    }
+    else {
+        $json = json_encode((array)$weather);
+        echo $json;
+    }
 ?>

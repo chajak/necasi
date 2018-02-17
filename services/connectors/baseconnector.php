@@ -81,6 +81,8 @@
                 $this->model = $this->parser->parse($this->rawOutput);
             }
 
+            //filter out by DATETIME
+
             return $this->model;
         }
 
