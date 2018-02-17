@@ -200,6 +200,34 @@ var cook = new function() {
     }
 }
 
+function hasClass(el, className) {
+    if (el.classList) {
+        return el.classList.contains(className);
+    }
+    else {
+        return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
+    }
+}
+
+function addClass(el, className) {
+    if (el.classList) {
+        el.classList.add(className);
+    }
+    else if (!hasClass(el, className)) {
+        el.className += " " + className;
+    }
+}
+
+function removeClass(el, className) {
+    if (el.classList) {
+        el.classList.remove(className);
+    }
+    else if (hasClass(el, className)) {
+        var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+        el.className=el.className.replace(reg, ' ');
+    }
+}
+
 function processForm(e) {
     var datetime = document.querySelector('input[name="day"]:checked').value;
     var searchedAddress = document.getElementById("search").value;
@@ -256,11 +284,22 @@ function callGet(url) {
 }
 
 const hourTemplate = function(hour) {
-    return "<div>" + hour.formattedTime + "</div>";
+    var temperatureUnit = "°C";
+    var cloudinessUnit = "%";
+    var fogUnit = "%";
+
+    return '' + 
+    '<div class="col-sm-2 col-md-2 hour">' +
+        '<div class="row formattedTime">' + hour.formattedTime + '</div>' +
+        '<div class="row temperature">' + hour.temperature + ' ' + temperatureUnit + '</div>' +
+        '<div class="row cloudiness">' + hour.cloudiness + ' ' + cloudinessUnit + '</div>' +
+        ((hour.fog > 0) ? '<div class="row fog">' + hour.fog + ' ' + fogUnit + '</div>' : '') + 
+    '</div>';
 }
 
 function displayResults(model) {
     var resultsDiv = document.getElementById("results");
+    removeClass(resultsDiv, "hidden");
     var hoursArray = Object.values(model.hours);
     var formattedResult = hoursArray.map(hourTemplate).join('');
     resultsDiv.innerHTML = formattedResult;

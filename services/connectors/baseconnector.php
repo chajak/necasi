@@ -81,7 +81,26 @@
                 $this->model = $this->parser->parse($this->rawOutput);
             }
 
+            $this->model->hours = $this->filterHours($this->model->hours);
+
             return $this->model;
+        }
+
+        protected function filterHours($hours) {
+            $filteredHours = array();
+            $currentHourTimestamp = $this->dateTime->getTimestamp();
+            $endOfDay = clone $this->dateTime;
+            //with midnight
+            $endOfDay->modify('tomorrow');
+            $endOfDayTimestamp = $endOfDay->getTimestamp();
+
+            foreach($hours as $hour) {
+                if($hour["timestamp"] >= $currentHourTimestamp && $hour["timestamp"] <= $endOfDayTimestamp) {
+                    array_push($filteredHours, $hour);
+                }
+            }
+
+            return $filteredHours;
         }
 
         protected function reduceLocation() {

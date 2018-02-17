@@ -48,7 +48,7 @@
                 $timeAttributes = $time->attributes();
                 if((string)$timeAttributes["from"] == (string)$timeAttributes["to"]) {
                     $hourTimestamp = (string)$timeAttributes["from"];
-
+                    
                     $location = $time->location[0];
                     $temperatureObject = $location->temperature[0]->attributes();
                     $windSpeedObject = $location->windSpeed[0]->attributes();
@@ -56,6 +56,7 @@
                     $fogObject = $location->fog[0]->attributes();
 
                     $foundHour = array();
+                    $foundHour["timestamp"] = strtotime($hourTimestamp);
                     $foundHour["datetime"] = $this->getFormatedDateTimeString($hourTimestamp);
                     $foundHour["formattedDate"] = $this->getFormatedDateTimeString($hourTimestamp, "d.m.Y");
                     $foundHour["formattedShortDate"] = $this->getFormatedDateTimeString($hourTimestamp, "d.m.");
