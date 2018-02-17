@@ -43,3 +43,12 @@ main {
 #results .hour > .row {
     padding: 0 10px;
 }
+
+#submitter {
+    background-repeat: no-repeat;
+    background-position: 90% 50%;
+}
+
+#submitter.waiting {
+    padding-right: 35px;
+}

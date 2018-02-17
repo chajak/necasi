@@ -20,3 +20,6 @@ html, body {
     border: 1px solid #dddddd;
     background-color: rgba(0, 0, 0, 0.2);
 }
+#submitter.waiting {
+    background-image: url('../img/spinner.gif');
+}

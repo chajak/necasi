@@ -84,6 +84,8 @@ var locator = new function () {
                     response = JSON.parse(request.responseText);
                     if (!!response.results) {
                         locator.updateSearch(response.results[0], true);
+                        weatherman.locator = locator;
+                        weatherman.getWeather();
                     }
                 }
             }
@@ -107,6 +109,8 @@ var locator = new function () {
                     response = JSON.parse(request.responseText);
                     if (!!response.results) {
                         locator.updateSearch(response.results[0], false);
+                        weatherman.locator = locator;
+                        weatherman.getWeather();
                     }
                 }
             }
@@ -148,6 +152,59 @@ var locator = new function () {
         locator.search = locator.cookieObj.search;
 
         locator.updateFields();
+    }
+}
+
+var weatherman = new function() {
+    this.locator = null;
+    this.datetime = "";
+    this.url = "";
+
+    this.hourTemplate = function(hour) {
+        var temperatureUnit = "°C";
+        var cloudinessUnit = "%";
+        var fogUnit = "%";
+    
+        return '' + 
+        '<div class="col-sm-2 col-md-2 hour">' +
+            '<div class="row formattedTime">' + hour.formattedTime + '</div>' +
+            '<div class="row temperature">' + hour.temperature + ' ' + temperatureUnit + '</div>' +
+            '<div class="row cloudiness">' + hour.cloudiness + ' ' + cloudinessUnit + '</div>' +
+            ((hour.fog > 0) ? '<div class="row fog">' + hour.fog + ' ' + fogUnit + '</div>' : '') + 
+        '</div>';
+    }
+
+    this.getWeather = function() {
+        this.url = "/services/rest/weather.php?lat=" + this.locator.lat + "&lng=" + this.locator.lng + "&datetime=" + this.datetime;
+        this.callGet();
+    }
+
+    this.callGet = function() {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', this.url);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                //handle response here
+                self.model = JSON.parse(xhr.responseText);
+                self.displayResults();
+            }
+            else {
+                console.log("ERROR");
+            }
+
+            utils.removeClass(submitter, "disabled");
+            utils.removeClass(submitter, "waiting");
+        };
+        xhr.send();
+    }
+
+    this.displayResults = function() {
+        var resultsDiv = document.getElementById("results");
+        utils.removeClass(resultsDiv, "hidden");
+        var hoursArray = Object.values(this.model.hours);
+        var formattedResult = hoursArray.map(this.hourTemplate).join('');
+        resultsDiv.innerHTML = formattedResult;
     }
 }
 
@@ -200,47 +257,51 @@ var cook = new function() {
     }
 }
 
-function hasClass(el, className) {
-    if (el.classList) {
-        return el.classList.contains(className);
+var utils = new function() {
+    this.hasClass = function(el, className) {
+        if (el.classList) {
+            return el.classList.contains(className);
+        }
+        else {
+            return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
+        }
     }
-    else {
-        return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
+    
+    this.addClass = function(el, className) {
+        if (el.classList) {
+            el.classList.add(className);
+        }
+        else if (!hasClass(el, className)) {
+            el.className += " " + className;
+        }
     }
-}
-
-function addClass(el, className) {
-    if (el.classList) {
-        el.classList.add(className);
-    }
-    else if (!hasClass(el, className)) {
-        el.className += " " + className;
-    }
-}
-
-function removeClass(el, className) {
-    if (el.classList) {
-        el.classList.remove(className);
-    }
-    else if (hasClass(el, className)) {
-        var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
-        el.className=el.className.replace(reg, ' ');
+    
+    this.removeClass = function(el, className) {
+        if (el.classList) {
+            el.classList.remove(className);
+        }
+        else if (hasClass(el, className)) {
+            var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+            el.className=el.className.replace(reg, ' ');
+        }
     }
 }
 
 function processForm(e) {
-    var datetime = document.querySelector('input[name="day"]:checked').value;
+    weatherman.datetime = document.querySelector('input[name="day"]:checked').value;
+    weatherman.locator = locator;
     var searchedAddress = document.getElementById("search").value;
+
+    var submitter = document.getElementById("submitter");
+    utils.addClass(submitter, "disabled");
+    utils.addClass(submitter, "waiting");
+
     if (searchedAddress == locator.search) {
-        //not changed address
-        console.log("Address: " + searchedAddress + " SAME (GPS: " + locator.lat + "," + locator.lng + ")");
+        weatherman.getWeather();
     }
     else {
-        console.log("Address: " + searchedAddress + " NOT SAME - RECALCULATING");
         locator.getGpsFromAddress(searchedAddress, true);
     }
-
-    getWeather(locator, datetime);
 
     e.preventDefault();
     return false;
@@ -260,49 +321,6 @@ function btnClick(e) {
             btn.getElementsByTagName("input")[0].checked = false;
         }
     }
-}
-
-function getWeather(locator, datetime) {
-    var url = "/services/rest/weather.php?lat=" + locator.lat + "&lng=" + locator.lng + "&datetime=" + datetime;
-    callGet(url);
-}
-
-function callGet(url) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            //handle response here
-            var model = JSON.parse(xhr.responseText);
-            displayResults(model);
-        }
-        else {
-            console.log("ERROR");
-        }
-    };
-    xhr.send();
-}
-
-const hourTemplate = function(hour) {
-    var temperatureUnit = "°C";
-    var cloudinessUnit = "%";
-    var fogUnit = "%";
-
-    return '' + 
-    '<div class="col-sm-2 col-md-2 hour">' +
-        '<div class="row formattedTime">' + hour.formattedTime + '</div>' +
-        '<div class="row temperature">' + hour.temperature + ' ' + temperatureUnit + '</div>' +
-        '<div class="row cloudiness">' + hour.cloudiness + ' ' + cloudinessUnit + '</div>' +
-        ((hour.fog > 0) ? '<div class="row fog">' + hour.fog + ' ' + fogUnit + '</div>' : '') + 
-    '</div>';
-}
-
-function displayResults(model) {
-    var resultsDiv = document.getElementById("results");
-    removeClass(resultsDiv, "hidden");
-    var hoursArray = Object.values(model.hours);
-    var formattedResult = hoursArray.map(hourTemplate).join('');
-    resultsDiv.innerHTML = formattedResult;
 }
 
 //global now ...
