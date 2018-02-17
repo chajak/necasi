@@ -66,7 +66,7 @@
                     $foundHour["cloudiness"] = (string)$cloudinessObject->percent;
                     $foundHour["fog"] = (string)$fogObject->percent;
 
-                    $this->model->hours[$hourTimestamp] = $foundHour;
+                    $this->model->hours[$foundHour["datetime"]] = $foundHour;
                 }  
             }
         }
