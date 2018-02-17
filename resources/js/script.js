@@ -6,37 +6,39 @@ var locator = new function () {
     this.cookieObj = null;
 
     this.init = function () {
-        locator.cookieObj = cook.areCookiesSet();
-        if (!locator.cookieObj) {
-            locator.tryGeolocation();
+        this.cookieObj = cook.areCookiesSet();
+        if (!this.cookieObj) {
+            this.tryGeolocation();
         }
         else {
-            locator.setDataFromCookieObj();
+            this.setDataFromCookieObj();
         }
     }
 
     this.tryGeolocation = function () {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(locator.browserGeolocationSuccess, locator.browserGeolocationFail, { maximumAge: 50000, timeout: 20000, enableHighAccuracy: true });
+            navigator.geolocation.getCurrentPosition(this.browserGeolocationSuccess, this.browserGeolocationFail, { maximumAge: 50000, timeout: 20000, enableHighAccuracy: true });
         }
         else {
-            locator = locator.tryAPIGeolocation();
+            this.tryAPIGeolocation();
         }
     };
 
     this.apiGeolocationSuccess = function (position) {
-        locator.lat = position.coords.latitude;
-        locator.lng = position.coords.lnggitude;
-        locator.getAddressFromGps(locator.lat, locator.lng);
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.lnggitude;
+        this.getAddressFromGps(this.lat, this.lng);
     };
 
     this.browserGeolocationSuccess = function (position) {
-        locator.lat = position.coords.latitude;
-        locator.lng = position.coords.lnggitude;
-        locator.getAddressFromGps(locator.lat, locator.lng);
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.lnggitude;
+        this.getAddressFromGps(locator.lat, locator.lng);
     };
 
     this.tryAPIGeolocation = function () {
+        var self = this;
+
         var request = new XMLHttpRequest();
         request.open('POST', 'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyCq7ai9qtsKKPA_HfNb_uFQapZ6T4azB8I', true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -50,7 +52,7 @@ var locator = new function () {
                 }
 
                 if (!!response.location) {
-                    locator.apiGeolocationSuccess({ coords: { latitude: response.location.lat, lnggitude: response.location.lng } });
+                    self.apiGeolocationSuccess({ coords: { latitude: response.location.lat, lnggitude: response.location.lng } });
                 }
             }
         }
@@ -63,7 +65,7 @@ var locator = new function () {
                 break;
             case error.PERMISSION_DENIED:
                 if (error.message.indexOf("Only secure origins are allowed") == 0) {
-                    locator.tryAPIGeolocation();
+                    this.tryAPIGeolocation();
                 }
                 break;
             case error.POSITION_UNAVAILABLE:
@@ -72,9 +74,10 @@ var locator = new function () {
         }
     };
 
-    this.getAddressFromGps = function (lat, lng) {
+    this.getAddressFromGps = function () {
+        var self = this;
         var request = new XMLHttpRequest();
-        request.open('GET', 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&key=AIzaSyCq7ai9qtsKKPA_HfNb_uFQapZ6T4azB8I&language=cs&result_type=political', true);
+        request.open('GET', 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.lat + ',' + this.lng + '&key=AIzaSyCq7ai9qtsKKPA_HfNb_uFQapZ6T4azB8I&language=cs&result_type=political', true);
         request.send();
 
         request.onreadystatechange = function () {
@@ -82,9 +85,9 @@ var locator = new function () {
                 var response = "";
                 if (!!request.responseText) {
                     response = JSON.parse(request.responseText);
-                    if (!!response.results) {
-                        locator.updateSearch(response.results[0], true);
-                        weatherman.locator = locator;
+                    if (!!response && !!response.results) {
+                        self.updateSearch(response.results[0], true);
+                        weatherman.locator = self;
                         weatherman.getWeather();
                     }
                 }
@@ -93,8 +96,10 @@ var locator = new function () {
     }
 
     this.getGpsFromAddress = function (searchedAddress, updateLocatorSearch) {
+        var self = this;
+
         if (updateLocatorSearch == true) {
-            locator.search = searchedAddress;
+            self.search = searchedAddress;
         }
 
         var encodedAddress = encodeURI(searchedAddress);
@@ -107,9 +112,10 @@ var locator = new function () {
                 var response = "";
                 if (!!request.responseText) {
                     response = JSON.parse(request.responseText);
-                    if (!!response.results) {
-                        locator.updateSearch(response.results[0], false);
-                        weatherman.locator = locator;
+                    if (!!response.results ) {
+                        weatherman.locator = self;
+                        self.updateSearch(response.results[0], false);
+                        
                         weatherman.getWeather();
                     }
                 }
@@ -123,35 +129,35 @@ var locator = new function () {
     }
 
     this.updateSearch = function (address, updateSearchText) {
-        locator.address = address;
-        locator.lat = locator.address.geometry.location.lat;
-        locator.lng = locator.address.geometry.location.lng;
+        this.address = address;
+        this.lat = this.address.geometry.location.lat;
+        this.lng = this.address.geometry.location.lng;
 
         if (updateSearchText == true) {
-            locator.search = locator.address.formatted_address;
+            this.search = this.address.formatted_address;
         }
 
-        locator.updateFields();
-        locator.setCookieObj();
+        this.updateFields();
+        this.setCookieObj();
     }
 
     this.updateFields = function () {
-        document.getElementById("search").value = locator.search;
-        document.getElementById("lat").value = locator.lat;
-        document.getElementById("lng").value = locator.lng;
+        document.getElementById("search").value = this.search;
+        document.getElementById("lat").value = this.lat;
+        document.getElementById("lng").value = this.lng;
     }
 
     this.setDataFromCookieObj = function (cookieObj) {
         if(!!cookieObj) {
-            locator.cookieObj = cookieObj;
+            this.cookieObj = cookieObj;
         }
 
-        locator.lat = locator.cookieObj.lat;
-        locator.lng = locator.cookieObj.lng;
-        locator.address = locator.cookieObj.address;
-        locator.search = locator.cookieObj.search;
+        this.lat = this.cookieObj.lat;
+        this.lng = this.cookieObj.lng;
+        this.address = this.cookieObj.address;
+        this.search = this.cookieObj.search;
 
-        locator.updateFields();
+        this.updateFields();
     }
 }
 
