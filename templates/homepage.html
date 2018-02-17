@@ -8,6 +8,7 @@
     <title>Necasi.cz</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ga}}"></script>
     <script src="{{resourcesUrl}}/js/script.js?{{jsTimestamp}}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq7ai9qtsKKPA_HfNb_uFQapZ6T4azB8I"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" />
     <link href="{{resourcesUrl}}/css/style.css" rel="stylesheet" />
     <link href="{{themeUrl}}/css/style.css" rel="stylesheet" />
@@ -75,7 +76,17 @@
                             </div>
                         </form>
                     </div>
-                    <div class="row hidden" id="results">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 hidden" id="resultsWrapper">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="row" id="results"></div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="row" id="map"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-1 col-md-2"></div>

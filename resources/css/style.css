@@ -26,21 +26,21 @@ main {
     cursor: pointer;
 }
 
-#results {
+#resultsWrapper {
     width: 100%;
     border-radius: 10px;
     padding: 20px;
 }
 
-#results .hour {
+#resultsWrapper .hour {
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 10px;
-    margin-right: 5px;
+    /*margin-right: 5px;*/
     margin-bottom: 5px;
 }
 
-#results .hour > .row {
+#resultsWrapper .hour > .row {
     padding: 0 10px;
 }
 
@@ -51,4 +51,9 @@ main {
 
 #submitter.waiting {
     padding-right: 35px;
+}
+
+#map {
+    height: 300px;
+    width: 100%;
 }

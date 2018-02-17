@@ -172,7 +172,7 @@ var weatherman = new function() {
         var fogUnit = "%";
     
         return '' + 
-        '<div class="col-sm-2 col-md-2 hour">' +
+        '<div class="col-sm-4 col-md-4 hour">' +
             '<div class="row formattedTime">' + hour.formattedTime + '</div>' +
             '<div class="row temperature">' + hour.temperature + ' ' + temperatureUnit + '</div>' +
             '<div class="row cloudiness">' + hour.cloudiness + ' ' + cloudinessUnit + '</div>' +
@@ -187,6 +187,7 @@ var weatherman = new function() {
 
     this.callGet = function() {
         var self = this;
+
         var xhr = new XMLHttpRequest();
         xhr.open('GET', this.url);
         xhr.onload = function() {
@@ -201,13 +202,29 @@ var weatherman = new function() {
 
             utils.removeClass(submitter, "disabled");
             utils.removeClass(submitter, "waiting");
+
+            self.initMap();
         };
         xhr.send();
     }
 
+    this.initMap = function() {
+        var place = {lat: parseFloat(this.locator.lat), lng: parseFloat(this.locator.lng)};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: place
+        });
+        var marker = new google.maps.Marker({
+            position: place,
+            map: map
+        });
+    }
+
     this.displayResults = function() {
+        var resultsWrapperDiv = document.getElementById("resultsWrapper");
+        utils.removeClass(resultsWrapperDiv, "hidden");
+
         var resultsDiv = document.getElementById("results");
-        utils.removeClass(resultsDiv, "hidden");
         var hoursArray = Object.values(this.model.hours);
         var formattedResult = hoursArray.map(this.hourTemplate).join('');
         resultsDiv.innerHTML = formattedResult;
