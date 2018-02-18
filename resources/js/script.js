@@ -172,7 +172,7 @@ var weatherman = new function() {
         var fogUnit = "%";
     
         return '' + 
-        '<div class="col-sm-4 col-md-4 hour">' +
+        '<div class="col-sm-2 col-md-2 hour">' +
             '<div class="row formattedTime">' + hour.formattedTime + '</div>' +
             '<div class="row temperature">' + hour.temperature + ' ' + temperatureUnit + '</div>' +
             '<div class="row cloudiness">' + hour.cloudiness + ' ' + cloudinessUnit + '</div>' +

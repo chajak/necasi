@@ -5,7 +5,11 @@ html, body {
 }
 
 main {
-    height: 100vh;
+    padding-top: 8%;
+}
+
+.hidden {
+    display: none;
 }
 
 #mainSearch {
@@ -36,8 +40,6 @@ main {
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 10px;
-    /*margin-right: 5px;*/
-    margin-bottom: 5px;
 }
 
 #resultsWrapper .hour > .row {
@@ -56,4 +58,5 @@ main {
 #map {
     height: 300px;
     width: 100%;
+    border-radius: 10px;
 }
