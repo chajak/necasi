@@ -37,7 +37,13 @@
         private function processMetaAttributes() {
             $metaAttributes = $this->xml->meta[0]->model[0]->attributes();
 
-            $this->model->validTo = $this->getFormatedDateTimeString($metaAttributes["nextrun"]);
+            //valid to
+            $validTo = strtotime($metaAttributes["nextrun"]);
+            if($validTo < time()) {
+                $validTo = strtotime("+1 hour");
+            }
+
+            $this->model->validTo = $this->getFormatedDateTimeStringFromTimestamp($validTo);
             $this->model->from = $this->getFormatedDateTimeString($metaAttributes["from"]);
             $this->model->to = $this->getFormatedDateTimeString($metaAttributes["to"]);
         }

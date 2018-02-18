@@ -16,7 +16,7 @@
             return (new \ReflectionClass($this))->getShortName()."_".$this->parserVersion;
         }
 
-        public function parse($rawXml) {
+        public function parse($rawData) {
             die("Override Me!");
         }
 

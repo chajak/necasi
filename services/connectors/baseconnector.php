@@ -66,6 +66,7 @@
             if($this::$config["cacheEnabled"] == true) {
                 $cache = $this->cache->searchInCache($this->location, $this->whoAmI());
                 if(empty($cache)) {
+                    //ERROR HANDLING?
                     $this->rawOutput = file_get_contents($this->url);
                     $this->model = $this->parser->parse($this->rawOutput);
 

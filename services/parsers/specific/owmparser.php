@@ -54,19 +54,29 @@
 
                 //first found
                 if(empty($this->model->created)) {
-                    $this->model->created = $this->model->from = $foundHour["datetime"];
+                    $this->model->created = $this->getFormatedDateTimeStringFromTimestamp(time());
+                    $this->model->from = $this->getFormatedDateTimeStringFromTimestamp($foundHour["datetime"]);
                 }
                 else {
                     //second found
                     if(empty($this->model->validTo)) {
-                        $this->model->validTo = $foundHour["datetime"];
+                        $this->model->validTo = $this->getFormatedDateTimeStringFromTimestamp($foundHour["datetime"]);
                     }
                 }
 
-                //last found
-                $this->model->to = $foundHour["datetime"];
-                $this->model->hours[$foundHour["datetime"]] = $foundHour; 
+                $this->model->hours[$foundHour["datetime"]] = $foundHour;
             }
+
+
+            //after last found
+            $this->model->to = $this->getFormatedDateTimeStringFromTimestamp($foundHour["datetime"]);
+            
+            //valid to check
+            $validTo = strtotime($this->model->validTo);
+            if($validTo < time()) {
+                $validTo = strtotime("+1 hour");
+            }
+            $this->model->validTo = $this->getFormatedDateTimeStringFromTimestamp($validTo);
 
             //must interpolate datetimes between 3 hour intervals
             $this->interpolateRest();

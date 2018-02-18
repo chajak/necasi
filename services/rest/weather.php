@@ -17,14 +17,20 @@
     $yrNo->setDateTime($dateTime);
     $weather = $yrNo->getWeather();
 */
-
+/*
     $owmParser = new Parsers\OwmParser;
     $owm = new Connectors\OwmConnector;
     $owm->setParser($owmParser);
     $owm->setGps($lat, $lng);
     $owm->setDateTime($dateTime);
     $weather = $owm->getWeather();
-
+*/
+    $meteorParser = new Parsers\MeteorParser;
+    $meteor = new Connectors\MeteorConnector;
+    $meteor->setParser($meteorParser);
+    $meteor->setGps($lat, $lng);
+    $meteor->setDateTime($dateTime);
+    $weather = $meteor->getWeather();
 
     if(\BaseClass::$config["debug"] == true) {
         echo "<pre>".print_r($weather, true)."</pre>";

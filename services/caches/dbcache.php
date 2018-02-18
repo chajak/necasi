@@ -29,7 +29,8 @@
 
             $toReturnArray = array();
             $result = $this->db->query("SELECT `model` FROM `cache` WHERE ".(isset($this->connectorName) ? "`connector` = '".$this->connectorName."' AND " : "")."`validTo` > NOW() AND `minLat` <= ".$lat." AND `maxLat` >= ".$lat." AND `minLng` <= ".$lng." AND `maxLng` >= ".$lng." ORDER BY `id` DESC LIMIT 1");
-            while($row = mysqli_fetch_assoc($result)) {
+            if($result->num_rows == 1) {
+                $row = mysqli_fetch_assoc($result);
                 $deserializedMode = unserialize(base64_decode($row["model"]));
                 array_push($toReturnArray, $deserializedMode);
             }
@@ -50,6 +51,30 @@
 
             $this->minLng = $this->location["lng"] - $this->config["cacheLngPrecision"];
             $this->maxLng = $this->location["lng"] + $this->config["cacheLngPrecision"];
+        }
+
+        //custom functions for Meteor only
+        public function searchApiRunInCache() {
+            $apiRunData = array();
+            $result = $this->db->query("SELECT `from`, `to`, `validTo`, `apiRun` FROM `meteor_apirun` WHERE `validTo` > NOW() ORDER BY `id` DESC LIMIT 1");
+            if($result->num_rows == 1) {
+                $row = mysqli_fetch_assoc($result);
+                $apiRunData["from"] = $row["from"];
+                $apiRunData["to"] = $row["to"];
+                $apiRunData["validTo"] = $row["validTo"];
+                $apiRunData["apiRun"] = $row["apiRun"];
+            }
+
+            return $apiRunData;
+        }
+
+        public function saveApiRunIntoCache($apiRunData) {
+            $from = $apiRunData["from"];
+            $to = $apiRunData["to"];
+            $validTo = $apiRunData["validTo"];
+            $apiRun = $apiRunData["apiRun"];
+
+            $this->db->query("INSERT INTO `meteor_apirun` (`from`, `to`, `validTo`, `apiRun`) VALUES ('".$from."', '".$to."', '".$validTo."', '".$apiRun."')");
         }
     }
 ?>
