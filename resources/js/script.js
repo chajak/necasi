@@ -209,15 +209,20 @@ var weatherman = new function() {
     }
 
     this.initMap = function() {
-        var place = {lat: parseFloat(this.locator.lat), lng: parseFloat(this.locator.lng)};
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 14,
-            center: place
-        });
-        var marker = new google.maps.Marker({
-            position: place,
-            map: map
-        });
+        var searchedAddress = document.getElementById("search").value;
+
+        if (searchedAddress != this.locator.search || firstLoad == true) {
+            firstLoad = false;
+            var place = {lat: parseFloat(this.locator.lat), lng: parseFloat(this.locator.lng)};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: place
+            });
+            var marker = new google.maps.Marker({
+                position: place,
+                map: map
+            });
+        }
     }
 
     this.displayResults = function() {
@@ -347,7 +352,8 @@ function btnClick(e) {
 }
 
 //global now ...
-var btns = null
+var btns = null;
+var firstLoad = true;
 
 window.onload = function () {
     locator.init();

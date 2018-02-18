@@ -62,13 +62,13 @@
                     $foundHour["formattedShortDate"] = $this->getFormatedDateTimeString($hourTimestamp, "d.m.");
                     $foundHour["formattedTime"] = $this->getFormatedDateTimeString($hourTimestamp, "H:i");
 
-                    $foundHour["temperature"] = (string)$temperatureObject->value;
+                    $foundHour["temperature"] = round((float)$temperatureObject->value, 1);
                     $foundHour["unit"] = (string)$temperatureObject->unit;
 
-                    $foundHour["windspeed"] = (string)$windSpeedObject->mps;
+                    $foundHour["windspeed"] = round((float)$windSpeedObject->mps, 1);
 
-                    $foundHour["cloudiness"] = (string)$cloudinessObject->percent;
-                    $foundHour["fog"] = (string)$fogObject->percent;
+                    $foundHour["cloudiness"] = round((float)$cloudinessObject->percent);
+                    $foundHour["fog"] = (float)$fogObject->percent;
 
                     $this->model->hours[$foundHour["datetime"]] = $foundHour;
                 }  
