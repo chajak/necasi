@@ -9,6 +9,7 @@
 
             //call this after
             $this->parserVersion = "1.0";
+            $this->model->name = $this->whoAmI();
         }
 
         public function parse($rawXml) {
@@ -69,6 +70,7 @@
 
                     $foundHour["cloudiness"] = round((float)$cloudinessObject->percent);
                     $foundHour["fog"] = (float)$fogObject->percent;
+                    $foundHour["real"] = true;
 
                     $this->model->hours[$foundHour["datetime"]] = $foundHour;
                 }  

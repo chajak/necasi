@@ -9,6 +9,7 @@
 
             //call this after
             $this->parserVersion = "1.0";
+            $this->model->name = $this->whoAmI();
         }
 
         public function parse($rawJson) {
@@ -49,6 +50,7 @@
 
                 $foundHour["cloudiness"] = round((float)$cloudinessObject->all);
                 $foundHour["fog"] = "";
+                $foundHour["real"] = true;
 
                 //first found
                 if(empty($this->model->created)) {
@@ -65,6 +67,9 @@
                 $this->model->to = $foundHour["datetime"];
                 $this->model->hours[$foundHour["datetime"]] = $foundHour; 
             }
+
+            //must interpolate datetimes between 3 hour intervals
+            $this->interpolateRest();
         }
     }
 ?>

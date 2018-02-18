@@ -1,23 +1,16 @@
 <?php
     namespace services\parsers;
 
-    use services\models as Models;
-
-    class XmlParser extends \BaseClass {
+    use services\parsers as Parsers;
+    
+    class XmlParser extends Parsers\BaseParser {
         protected $rawXml;
         protected $xml;
         protected $parserClass;
-        public $parserVersion;
-        protected $model;
 
         public function __construct() {
-            $this->model = new Models\DataModel;
+            parent::__construct();
             $this->parserClass = "SimpleXMLElement";
-            $this->parserVersion = "0.0";
-        }
-
-        public function whoAmI() {
-            return (new \ReflectionClass($this))->getShortName()."_".$this->parserVersion;
         }
 
         public function parse($rawXml) {

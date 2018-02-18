@@ -2,6 +2,7 @@
     namespace services\models;
     
     class DataModel {
+        public $name;
         public $created;
         public $validTo;
 
