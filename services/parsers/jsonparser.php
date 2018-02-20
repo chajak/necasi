@@ -15,7 +15,7 @@
             if(!empty($rawJson)) {
                 $this->rawJson = $rawJson;
             }
-
+            
             if(!empty($this->rawJson)) {
                 $this->json = json_decode($this->rawJson);
             }

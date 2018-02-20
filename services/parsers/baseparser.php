@@ -60,6 +60,7 @@
             $interpolationTemp = $this->interpolatedValue($from["temperature"], $to["temperature"], $interpolationSteps);
             $interpolationWind = $this->interpolatedValue($from["windspeed"], $to["windspeed"], $interpolationSteps);
             $interpolationCloud = $this->interpolatedValue($from["cloudiness"], $to["cloudiness"], $interpolationSteps);
+            $interpolationWindDir = $this->interpolatedValue($from["windDir"], $to["windDir"], $interpolationSteps);
 
             if($interpolationSteps > 1) {
                 for($i = 1; $i < $interpolationSteps; $i++) {
@@ -67,6 +68,7 @@
                     $interpolatedTemp = $from["temperature"] + ($i * $interpolationTemp);
                     $interpolatedWind = $from["windspeed"] + ($i * $interpolationWind);
                     $interpolatedCloud = $from["cloudiness"] + ($i * $interpolationCloud);
+                    $interpolatedWindDir = $from["windDir"] + ($i * $interpolationWindDir);
 
                     $interpolatedHour = array();
                     $interpolatedHour["timestamp"] = $interpolatedTimestamp;
@@ -79,9 +81,11 @@
                     $interpolatedHour["unit"] = $from["unit"];
     
                     $interpolatedHour["windspeed"] = round((float)$interpolatedWind, 1);
+                    $interpolatedHour["windDir"] = round((float)$interpolatedWindDir);
     
                     $interpolatedHour["cloudiness"] = round((float)$interpolatedCloud);
-                    $interpolatedHour["fog"] = "";
+                    $interpolatedHour["fog"] = ""; //NO
+                    $interpolatedHour["rain"] = ""; //NO
                     $interpolatedHour["real"] = false;
 
                     array_push($interpolatedHours, $interpolatedHour);

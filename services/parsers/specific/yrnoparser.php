@@ -50,8 +50,9 @@
 
         private function processHours() {
             $times = $this->xml->product[0]->time;
-
-            foreach($times as $time) {
+            $i = 0;
+            for($i = 0; $i < count($times); $i++) {
+                $time = $times[$i];
                 $timeAttributes = $time->attributes();
                 if((string)$timeAttributes["from"] == (string)$timeAttributes["to"]) {
                     $hourTimestamp = (string)$timeAttributes["from"];
@@ -59,8 +60,11 @@
                     $location = $time->location[0];
                     $temperatureObject = $location->temperature[0]->attributes();
                     $windSpeedObject = $location->windSpeed[0]->attributes();
+                    $windDirObject = $location->windDirection[0]->attributes();
                     $cloudinessObject = $location->cloudiness[0]->attributes();
                     $fogObject = $location->fog[0]->attributes();
+
+                    $rainObject = $times[$i + 1]->location[0]->precipitation[0]->attributes();
 
                     $foundHour = array();
                     $foundHour["timestamp"] = strtotime($hourTimestamp);
@@ -73,13 +77,17 @@
                     $foundHour["unit"] = (string)$temperatureObject->unit;
 
                     $foundHour["windspeed"] = round((float)$windSpeedObject->mps, 1);
+                    $foundHour["windDir"] = round((float)$windSpeedObject->deg);
 
                     $foundHour["cloudiness"] = round((float)$cloudinessObject->percent);
                     $foundHour["fog"] = (float)$fogObject->percent;
+                    $foundHour["rain"] = round((float)$rainObject->value, 1);
                     $foundHour["real"] = true;
 
                     $this->model->hours[$foundHour["datetime"]] = $foundHour;
-                }  
+                }
+
+                $i++;
             }
         }
     }

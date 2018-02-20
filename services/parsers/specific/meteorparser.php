@@ -29,7 +29,7 @@
         private function buildDataModel() {
             if(!empty($this->json)) {
                 $this->processData();
-                $this->processList();
+                $this->processLists();
             }
         }
 
@@ -40,7 +40,12 @@
             $this->model->to = $this->getFormatedDateTimeString($this->apiRunData["to"]);
         }
 
-        private function processList() {
+        private function processLists() {
+            //$this->processWindSpeeds($this->json);
+            //$this->processWindDirs($this->json);
+            //$this->processTemperatures($this->json);
+            //$this->processClouds($this->json);
+            //$this->processRain($this->json);
             print_r($this->json);
             /*
 stdClass Object

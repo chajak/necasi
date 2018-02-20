@@ -16,8 +16,7 @@
     $yrNo->setGps($lat, $lng);
     $yrNo->setDateTime($dateTime);
     $weather = $yrNo->getWeather();
-*/
-/*
+
     $owmParser = new Parsers\OwmParser;
     $owm = new Connectors\OwmConnector;
     $owm->setParser($owmParser);
@@ -31,7 +30,7 @@
     $meteor->setGps($lat, $lng);
     $meteor->setDateTime($dateTime);
     $weather = $meteor->getWeather();
-
+    
     if(\BaseClass::$config["debug"] == true) {
         echo "<pre>".print_r($weather, true)."</pre>";
     }

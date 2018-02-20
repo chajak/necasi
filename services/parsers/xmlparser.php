@@ -17,7 +17,7 @@
             if(!empty($rawXml)) {
                 $this->rawXml = $rawXml;
             }
-
+            
             if(!empty($this->rawXml)) {
                 $this->xml = simplexml_load_string($this->rawXml, $this->parserClass, LIBXML_NOCDATA | LIBXML_NOBLANKS);
             }

@@ -47,20 +47,22 @@
                 $foundHour["unit"] = "celsius";
 
                 $foundHour["windspeed"] = round((float)$windSpeedObject->speed, 1);
+                $foundHour["windDir"] = round((float)$windSpeedObject->deg); //0 - 360
 
                 $foundHour["cloudiness"] = round((float)$cloudinessObject->all);
-                $foundHour["fog"] = "";
+                $foundHour["fog"] = ""; //NO
+                $foundHour["rain"] = ""; //NO
                 $foundHour["real"] = true;
 
                 //first found
                 if(empty($this->model->created)) {
                     $this->model->created = $this->getFormatedDateTimeStringFromTimestamp(time());
-                    $this->model->from = $this->getFormatedDateTimeStringFromTimestamp($foundHour["datetime"]);
+                    $this->model->from = $this->getFormatedDateTimeStringFromTimestamp($foundHour["timestamp"]);
                 }
                 else {
                     //second found
                     if(empty($this->model->validTo)) {
-                        $this->model->validTo = $this->getFormatedDateTimeStringFromTimestamp($foundHour["datetime"]);
+                        $this->model->validTo = $this->getFormatedDateTimeStringFromTimestamp($foundHour["timestamp"]);
                     }
                 }
 
@@ -69,7 +71,7 @@
 
 
             //after last found
-            $this->model->to = $this->getFormatedDateTimeStringFromTimestamp($foundHour["datetime"]);
+            $this->model->to = $this->getFormatedDateTimeStringFromTimestamp($foundHour["timestamp"]);
             
             //valid to check
             $validTo = strtotime($this->model->validTo);
