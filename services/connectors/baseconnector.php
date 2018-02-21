@@ -30,10 +30,21 @@
             $this->cache = new Caches\DbCache($this->db, $this::$config);
 
             $this->reduceLocation();
+            $this->tryAutoSetParser();
+        }
+
+        private function tryAutoSetParser() {
+            $probableParserName = str_replace("Connector", "Parser", $this->className());
+            $probableParserClass = "services\\parsers\\specific\\".$probableParserName;
+            $this->parser = new $probableParserClass();
+        }
+
+        public function className() {
+            return (new \ReflectionClass($this))->getShortName();
         }
 
         public function whoAmI() {
-            return (new \ReflectionClass($this))->getShortName()."_".$this->connectorVersion;
+            return $this->className()."_".$this->connectorVersion;
         }
 
         public function setLocation($location) {

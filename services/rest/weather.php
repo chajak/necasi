@@ -12,25 +12,19 @@
     $parser = $_GET['parser'] ?? '';
 
     if($parser == "owm") {
-        $owmParser = new Parsers\OwmParser;
         $owm = new Connectors\OwmConnector;
-        $owm->setParser($owmParser);
         $owm->setGps($lat, $lng);
         $owm->setDateTime($dateTime);
         $weather = $owm->getWeather();
     }
     else if($parser == "meteor") {
-        $meteorParser = new Parsers\MeteorParser;
         $meteor = new Connectors\MeteorConnector;
-        $meteor->setParser($meteorParser);
         $meteor->setGps($lat, $lng);
         $meteor->setDateTime($dateTime);
         $weather = $meteor->getWeather();
     }
     else {
-        $yrNoParser = new Parsers\YrNoParser;
         $yrNo = new Connectors\YrNoConnector;
-        $yrNo->setParser($yrNoParser);
         $yrNo->setGps($lat, $lng);
         $yrNo->setDateTime($dateTime);
         $weather = $yrNo->getWeather();
