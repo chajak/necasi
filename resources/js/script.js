@@ -200,6 +200,7 @@ var weatherman = new function() {
                 console.log("ERROR");
             }
 
+            submitter.disabled = false;
             utils.removeClass(submitter, "disabled");
             utils.removeClass(submitter, "waiting");
 
@@ -320,7 +321,7 @@ function processForm(e) {
     weatherman.locator = locator;
     var searchedAddress = document.getElementById("search").value;
 
-    var submitter = document.getElementById("submitter");
+    submitter.disabled = true;
     utils.addClass(submitter, "disabled");
     utils.addClass(submitter, "waiting");
 
@@ -354,10 +355,12 @@ function btnClick(e) {
 //global now ...
 var btns = null;
 var firstLoad = true;
+var submitter = null;
 
 window.onload = function () {
     locator.init();
     var form = document.getElementById("searchForm");
+    submitter = document.getElementById("submitter");
     form.addEventListener("submit", processForm);
 
     btns = document.querySelectorAll(".days > .btn");

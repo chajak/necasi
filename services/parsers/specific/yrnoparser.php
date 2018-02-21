@@ -50,7 +50,6 @@
 
         private function processHours() {
             $times = $this->xml->product[0]->time;
-            $i = 0;
             for($i = 0; $i < count($times); $i++) {
                 $time = $times[$i];
                 $timeAttributes = $time->attributes();
@@ -86,8 +85,6 @@
 
                     $this->model->hours[$foundHour["datetime"]] = $foundHour;
                 }
-
-                $i++;
             }
         }
     }
