@@ -170,12 +170,14 @@ var weatherman = new function() {
         var temperatureUnit = "°C";
         var cloudinessUnit = "%";
         var fogUnit = "%";
+        var rainUnit = "mm";
     
         return '' + 
         '<div class="col-sm-2 col-md-2 hour">' +
             '<div class="row formattedTime">' + hour.formattedTime + '</div>' +
             '<div class="row temperature">' + hour.temperature + ' ' + temperatureUnit + '</div>' +
             '<div class="row cloudiness">' + hour.cloudiness + ' ' + cloudinessUnit + '</div>' +
+            '<div class="row rain">' + hour.rain + ' ' + rainUnit + '</div>' +
             ((hour.fog > 0) ? '<div class="row fog">' + hour.fog + ' ' + fogUnit + '</div>' : '') + 
         '</div>';
     }
