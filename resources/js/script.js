@@ -65,7 +65,7 @@ var locator = new function () {
                 break;
             case error.PERMISSION_DENIED:
                 if (error.message.indexOf("Only secure origins are allowed") == 0) {
-                    this.tryAPIGeolocation();
+                    locator.tryAPIGeolocation();
                 }
                 break;
             case error.POSITION_UNAVAILABLE:
@@ -112,10 +112,11 @@ var locator = new function () {
                 var response = "";
                 if (!!request.responseText) {
                     response = JSON.parse(request.responseText);
-                    if (!!response.results ) {
+                    if (!!response.results) {
                         weatherman.locator = self;
                         self.updateSearch(response.results[0], false);
-                        
+                        mapChanged = true;
+
                         weatherman.getWeather();
                     }
                 }
@@ -213,9 +214,8 @@ var weatherman = new function() {
 
     this.initMap = function() {
         var searchedAddress = document.getElementById("search").value;
-
-        if (searchedAddress != this.locator.search || firstLoad == true) {
-            firstLoad = false;
+        if (mapChanged == true) {
+            mapChanged = false;
             var place = {lat: parseFloat(this.locator.lat), lng: parseFloat(this.locator.lng)};
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 14,
@@ -356,7 +356,7 @@ function btnClick(e) {
 
 //global now ...
 var btns = null;
-var firstLoad = true;
+var mapChanged = true;
 var submitter = null;
 
 window.onload = function () {

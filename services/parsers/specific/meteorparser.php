@@ -51,15 +51,15 @@
                 $foundHour["formattedShortDate"] = $this->getFormatedDateTimeStringFromTimestamp($hourTimestamp, "d.m.");
                 $foundHour["formattedTime"] = $this->getFormatedDateTimeStringFromTimestamp($hourTimestamp, "H:i");
 
-                $foundHour["temperature"] = "";
+                $foundHour["temperature"] = -1;
                 $foundHour["unit"] = "celsius";
 
-                $foundHour["windspeed"] = "";
-                $foundHour["windDir"] = "";
+                $foundHour["windspeed"] = -1;
+                $foundHour["windDir"] = -1;
 
-                $foundHour["cloudiness"] = "";
-                $foundHour["fog"] = ""; //NO
-                $foundHour["rain"] = "";
+                $foundHour["cloudiness"] = -1;
+                $foundHour["fog"] = -1; //NO
+                $foundHour["rain"] = -1;
                 $foundHour["real"] = true;
 
                 $this->model->hours[$foundHour["datetime"]] = $foundHour;

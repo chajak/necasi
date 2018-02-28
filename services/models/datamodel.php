@@ -10,6 +10,7 @@
         public $to;
 
         public $hours;
+        public $weight;
 
         public function __construct() {
             $hours = array();

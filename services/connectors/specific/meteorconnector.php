@@ -41,7 +41,7 @@
 
             //valid to
             $validTo = $apiRunResponse->expires;
-            if($validTo < time()) {
+            if($validTo <= time()) {
                 $validTo = strtotime("+1 hour");
             }
 

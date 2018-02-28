@@ -84,8 +84,8 @@
                     $interpolatedHour["windDir"] = round((float)$interpolatedWindDir);
     
                     $interpolatedHour["cloudiness"] = round((float)$interpolatedCloud);
-                    $interpolatedHour["fog"] = ""; //NO
-                    $interpolatedHour["rain"] = ""; //NO
+                    $interpolatedHour["fog"] = -1; //NO
+                    $interpolatedHour["rain"] = -1; //NO
                     $interpolatedHour["real"] = false;
 
                     array_push($interpolatedHours, $interpolatedHour);

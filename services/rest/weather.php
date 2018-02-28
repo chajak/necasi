@@ -1,15 +1,16 @@
 <?php
     namespace services\rest;
 
-    include("../../config.php");
-
     use services\connectors\specific as Connectors;
-    use services\parsers\specific as Parsers;   
-
-    $lat = $_GET['lat'] ?? '';
-    $lng = $_GET['lng'] ?? '';
-    $dateTime = $_GET['datetime'] ?? '';
-    $parser = $_GET['parser'] ?? '';
+    use services\parsers\specific as Parsers;
+    
+    if(!isset($ifFromCombined)) {
+        include("../../config.php");
+        $lat = $_GET['lat'] ?? '';
+        $lng = $_GET['lng'] ?? '';
+        $dateTime = $_GET['datetime'] ?? '';
+        $parser = $_GET['parser'] ?? '';
+    }
 
     if($parser == "owm") {
         $owm = new Connectors\OwmConnector;

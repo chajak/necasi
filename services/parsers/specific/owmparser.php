@@ -50,8 +50,8 @@
                 $foundHour["windDir"] = round((float)$windSpeedObject->deg); //0 - 360
 
                 $foundHour["cloudiness"] = round((float)$cloudinessObject->all);
-                $foundHour["fog"] = ""; //NO
-                $foundHour["rain"] = ""; //NO
+                $foundHour["fog"] = -1; //NO
+                $foundHour["rain"] = -1; //NO
                 $foundHour["real"] = true;
 
                 //first found
