@@ -24,16 +24,17 @@ var locator = new function () {
         }
     };
 
+    //same code but different handlers - just in case
     this.apiGeolocationSuccess = function (position) {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.lnggitude;
-        this.getAddressFromGps(this.lat, this.lng);
+        locator.lat = position.coords.latitude;
+        locator.lng = position.coords.longitude;
+        locator.getAddressFromGps(locator.lat, locator.lng);
     };
 
     this.browserGeolocationSuccess = function (position) {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.lnggitude;
-        this.getAddressFromGps(locator.lat, locator.lng);
+        locator.lat = position.coords.latitude;
+        locator.lng = position.coords.longitude;
+        locator.getAddressFromGps(locator.lat, locator.lng);
     };
 
     this.tryAPIGeolocation = function () {
@@ -52,7 +53,7 @@ var locator = new function () {
                 }
 
                 if (!!response.location) {
-                    self.apiGeolocationSuccess({ coords: { latitude: response.location.lat, lnggitude: response.location.lng } });
+                    self.apiGeolocationSuccess({ coords: { latitude: response.location.lat, longitude: response.location.lng } });
                 }
             }
         }
