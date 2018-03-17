@@ -11,9 +11,34 @@
     $lng = $_GET['lng'] ?? '';
     $dateTime = $_GET['datetime'] ?? '';
     $ifFromCombined = true;
+
+    function combineHours($weightedHours) {
+        $weatherCombined = new Models\DataModel;
+
+        $temperatureDivider = 1;
+        $windspeedDivider = 1;
+        $windDirDivider = 1;
+        $cloudinessDivider = 1;
+        $fogDivider = 1;
+        $rainDivider = 1;
+
+        end($weightedHours);
+        $mostWeightedWeight = key($weightedHours);
+
+        foreach($weightedHours[$mostWeightedWeight] as $timestamp => $hour) {
+            //this is our most weighted hour and combine with others
+            //foreach others, find same timestamp and combine (if not found, does not matter) - weight separately for each attribute (rain, temp, ...)
+            
+        }
+
+        return $weatherCombined;
+    }
     
     function weightHour($hour, $weight) {
-        echo "<pre>".$weight."<br>".print_r($hour, true)."</pre>";
+        if($hour->real == true) {
+            $weight *= 10;
+        }
+
         $hour->temperature = round((float)($hour->temperature * $weight), 1);
         $hour->windspeed = round((float)($hour->windspeed * $weight), 1);
         $hour->windDir = round((float)($hour->windDir * $weight));
@@ -61,7 +86,18 @@
     //weight - 1 2 3 - owm, meteor, yr - from worst to best
     //hour bonus 10 if real (not interpolated)
     
-    //now take yrNo - index 2 as base
+    //now take most weighted as base
+    //weighted 1 2 3
+    foreach($weathers as $parserWeight => $model) {
+        foreach($model->hours as $hour) {
+            $weightedHours[($parserWeight + 1)][$hour->timestamp] = $hour;
+        }
+    }
+
+    combineHours($weightedHours);
+    die();
+
+
     $weatherCombined = new Models\DataModel;
 
     foreach($weathers[2]->hours as $hour) {
@@ -109,6 +145,7 @@
         }
 
         if(!empty($neededHour1Array)) {
+            $realModificator = 1;
             $neededHour1 = array_pop($neededHour1Array);
             if($neededHour1->real == true) {
                 $realModificator = 10;
