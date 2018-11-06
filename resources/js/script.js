@@ -17,7 +17,7 @@ var locator = new function () {
 
     this.tryGeolocation = function () {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(this.browserGeolocationSuccess, this.browserGeolocationFail, { maximumAge: 50000, timeout: 20000, enableHighAccuracy: true });
+            navigator.geolocation.getCurrentPosition(locator.browserGeolocationSuccess, locator.browserGeolocationFail, { maximumAge: 50000, timeout: 20000, enableHighAccuracy: true });
         }
         else {
             this.tryAPIGeolocation();
@@ -371,4 +371,7 @@ window.onload = function () {
         var btn = btns[i];
         btn.addEventListener("click", btnClick);
     }
+
+    var here = document.getElementById("here");
+    here.addEventListener("click", locator.tryGeolocation);
 };
